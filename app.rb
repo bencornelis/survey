@@ -76,11 +76,13 @@ post("/take/:survey_id") do |id|
   respondent = Respondent.create(:name => params.fetch("name"))
   session[:respondent_id] = respondent.id
   @survey = Survey.find(id.to_i)
+  @percent_complete = 0
   erb(:take_survey)
 end
 
 get("/take/:survey_id") do |id|
   @survey = Survey.find(id.to_i)
+  @percent_complete = 100*session[:question_index]/@survey.questions.length
   erb(:take_survey)
 end
 

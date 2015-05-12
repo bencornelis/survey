@@ -1,4 +1,10 @@
 <h1><%= @survey.name %></h1>
+<h3>Percentage of survey completed: </h3>
+<div class="progress">
+  <div class="progress-bar" role="progressbar" aria-valuenow="<%=@percent_complete%>" aria-valuemin="0" aria-valuemax="100" style="width: <%=@percent_complete%>%;">
+    <%= @percent_complete%>%
+  </div>
+</div>
 
 <% if session[:question_index] < @survey.questions.length %>
 
