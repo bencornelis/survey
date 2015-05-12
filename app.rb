@@ -65,3 +65,31 @@ post("/questions/:question_id") do |id|
   survey_id = question.survey.id
   redirect "/surveys/#{survey_id}"
 end
+
+get("/start/:id") do |id|
+  @survey = Survey.find(id.to_i)
+  erb(:start_survey)
+end
+
+post("/take/:survey_id") do |id|
+  session[:question_index] = 0
+  respondent = Respondent.create(:name => params.fetch("name"))
+  session[:respondent_id] = respondent.id
+  @survey = Survey.find(id.to_i)
+  erb(:take_survey)
+end
+
+get("/take/:survey_id") do |id|
+  @survey = Survey.find(id.to_i)
+  erb(:take_survey)
+end
+
+post("/nextquestion/:survey_id") do |id|
+  survey = Survey.find(id.to_i)
+  question_id = survey.questions[session[:question_index]].id
+  answer_id = params["answer_id"]
+  respondent_id = session[:respondent_id]
+  Response.create({:question_id => question_id, :answer_id => answer_id, :respondent_id => respondent_id})
+  session[:question_index] += 1
+  redirect "/take/#{id}"
+end

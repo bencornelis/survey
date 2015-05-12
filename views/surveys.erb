@@ -1,5 +1,9 @@
 <h1> Surveys </h1>
 
 <% @surveys.each do |survey| %>
-<li> <a href="/surveys/<%=survey.id %>"> <%= survey.name %> </a>: <%= survey.description %> </li>
+  <% if session[:user_type] == "admin" %>
+  <li> <a href="/surveys/<%=survey.id %>"> <%= survey.name %> </a>: <%= survey.description %> </li>
+  <% elsif session[:user_type] == "user" %>
+  <li> <a href="/start/<%=survey.id %>"> <%= survey.name %> </a>: <%= survey.description %> </li>
+  <% end %>
 <% end %>

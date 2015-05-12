@@ -1,0 +1,19 @@
+<h1><%= @survey.name %></h1>
+
+<% if session[:question_index] < @survey.questions.length %>
+
+<h3> <%= @survey.questions[session[:question_index]].question %> </h3>
+
+<form action='/nextquestion/<%= @survey.id %>' method='post'>
+
+  <% @survey.questions[session[:question_index]].answers.each do |answer| %>
+    <input type="radio" name='answer_id' id='<%= answer.id %>' value='<%= answer.id %>'><%= answer.answer %>
+    <br>
+  <% end %>
+  <button type='submit'>Next question</button>
+
+</form>
+
+<% else %>
+Done!
+<% end %>

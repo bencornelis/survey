@@ -1,0 +1,9 @@
+<h1>Start <%= @survey.name %></h1>
+
+<form action="/take/<%= @survey.id %>" method="post">
+  <div class="form-group">
+    <label for="name">Name of User:</label>
+    <input type="text" name="name">
+	</div>
+	<button class="btn btn-info" name="submit">Start survey</button>
+</form>
