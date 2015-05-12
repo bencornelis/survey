@@ -1,0 +1,13 @@
+<h1> Welcome to Survey Wizard! </h1>
+<% unless logged_in? %>
+  <h5>Are you an administrator or a user?</h5>
+  <form action="/login" method="post">
+  	<div class="form-group">
+  	  <select id="user_type" name="user_type">
+  	    <option value="admin">Administrator</option>
+  	    <option value="user">User</option>
+  	  </select>
+  	<button class ="btn btn-info" name="login">Log In</button>
+  	</div>
+  </form>
+<% end %>

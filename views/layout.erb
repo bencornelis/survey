@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Survey Wizard</title>
+
+  <link rel='stylesheet' href='css/styles.css'>
+
+  <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css'>
+
+</head>
+<body>
+  <div class="container">
+    <%= yield %>
+  </div>
+  <a href="/">Home</a>
+  <br>
+  <% if session[:user_type] == "admin" %>
+    <a href="/surveys">View All Surveys</a>
+    <br>
+    <a href="/surveys/new">Add New Survey</a>
+    <br>
+    <a href="/respondents">List All Respondents</a>
+  <% elsif session[:user_type] == "user" %>
+    <br>
+    <a href="/surveys">Take A Survey </a>
+  <% end %>
+  </div>
+</body>
+
+</html>
