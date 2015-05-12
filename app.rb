@@ -47,3 +47,21 @@ post('/surveys') do
   @surveys=Survey.all
   erb(:surveys)
 end
+
+get('/surveys/:id') do |id|
+  @survey = Survey.find(id.to_i)
+  erb(:survey)
+end
+
+post('/surveys/:id') do |id|
+  @survey = Survey.find(id.to_i)
+  @survey.questions.create(:question => params.fetch("question"))
+  erb(:survey)
+end
+
+post("/questions/:question_id") do |id|
+  question = Question.find(id.to_i)
+  question.answers.create(answer: params.fetch("answer"))
+  survey_id = question.survey.id
+  redirect "/surveys/#{survey_id}"
+end

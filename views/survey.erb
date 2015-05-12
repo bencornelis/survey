@@ -1,7 +1,29 @@
-<%= @survey.name >
+<h1><%= @survey.name %></h1>
 
-<% @survey.questions each do |question| %>
-<li> question.question </li>
-<li> question.answers </li>
+<ol>
+<% @survey.questions.each do |question| %>
+<li> <%= question.question %>
+    <ul> <% question.answers.each do |answer| %>
+        <li> <%=  answer.answer %></li>
+      <% end %>
+    </ul>
+    <form action="/questions/<%= question.id %>" method="post">
+      <div class="form-group">
+        <input type="text" id ="answer/<%= question.id %>" name="answer">
+    	</div>
+    	<button class="btn btn-info" id="Submit/<%= question.id %>">Add answer</button>
+    </form>
+</li>
 <br>
-<% end >
+<% end %>
+</ol>
+
+<h3>Add a Question</h3>
+
+<form action="/surveys/<%= @survey.id %>" method="post">
+  <div class="form-group">
+    <label for="question">Question:</label>
+    <input type="text" name="question">
+	</div>
+	<button class="btn btn-info" name="submit">Add question</button>
+</form>
