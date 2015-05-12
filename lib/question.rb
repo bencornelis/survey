@@ -9,7 +9,12 @@ class Question < ActiveRecord::Base
   total_responses = self.responses.length
   answers.each do |answer|
     answer_count = Response.where(:answer_id => answer.id).length
-    return_hash.store(answer.answer, 100*answer_count/total_responses)
+    if total_responses > 0
+      percent = 100*answer_count/total_responses
+    else
+      percent = 0
+    end
+    return_hash.store(answer.answer, percent)
     end
   return_hash
 end

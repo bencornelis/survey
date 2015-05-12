@@ -1,7 +1,15 @@
 <h1> <%= @survey.name %> Statistics </h1>
 
+<ol>
 <% @survey.questions.each do |question|%>
-<% question.percents.each do |key, value| %>
-<%= key %>: <%= value %>%
+  <li><%= question.question %>
+    <br>
+    <ul>
+      <% question.percents.each do |key, value| %>
+        <li><%= key %>: <%= value %>%</li>
+      <% end %>
+    </ul>
+  </li>
+  <br>
 <% end %>
-<% end %>
+</ol>
