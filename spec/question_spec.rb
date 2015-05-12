@@ -29,7 +29,7 @@ describe(Question) do
       respondent2 = Respondent.create(name: "George")
       question.responses.create(respondent_id: respondent1.id, answer_id: answer1.id)
       question.responses.create(respondent_id: respondent2.id, answer_id: answer2.id)
-      expect(question.percents).to(eq({answer1 => 50, answer2 => 50, answer3 => 0}))
+      expect(question.percents).to(eq({answer1.answer => 50, answer2.answer => 50, answer3.answer => 0}))
      end
   end
 end

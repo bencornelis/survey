@@ -9,7 +9,7 @@ class Question < ActiveRecord::Base
   total_responses = self.responses.length
   answers.each do |answer|
     answer_count = Response.where(:answer_id => answer.id).length
-    return_hash.store(answer, 100*answer_count/total_responses)
+    return_hash.store(answer.answer, 100*answer_count/total_responses)
     end
   return_hash
 end

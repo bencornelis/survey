@@ -93,3 +93,8 @@ post("/nextquestion/:survey_id") do |id|
   session[:question_index] += 1
   redirect "/take/#{id}"
 end
+
+get("/surveys/:survey_id/statistics") do |id|
+  @survey = Survey.find(id.to_i)
+  erb(:statistics)
+end
