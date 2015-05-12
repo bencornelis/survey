@@ -18,4 +18,18 @@ describe(Question) do
     question = Question.create(question: "")
     expect(question.valid?).to(eq(false))
   end
+
+  describe("#percents") do
+    it("gives the percentage of respondents that chose this answer for its question") do
+      question = Question.create(question: "Favorite drink?")
+      answer1 = question.answers.create(answer: "coffee")
+      answer2 = question.answers.create(answer: "beer")
+      answer3 = question.answers.create(answer: "soda")
+      respondent1 = Respondent.create(name: "Fred")
+      respondent2 = Respondent.create(name: "George")
+      question.responses.create(respondent_id: respondent1.id, answer_id: answer1.id)
+      question.responses.create(respondent_id: respondent2.id, answer_id: answer2.id)
+      expect(question.percents).to(eq({answer1 => 50, answer2 => 50, answer3 => 0}))
+    end
+  end
 end

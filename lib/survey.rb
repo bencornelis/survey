@@ -11,4 +11,12 @@ class Survey < ActiveRecord::Base
     maximum: 100
   })
 
+  def responses
+    response_array = []
+    questions.each do |q|
+      response_array += q.responses
+    end
+    response_array
+  end
+
 end
