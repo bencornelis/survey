@@ -11,11 +11,30 @@
 <h3> <%= @survey.questions[session[:question_index]].question %> </h3>
 
 <form action='/nextquestion/<%= @survey.id %>' method='post'>
+  <% if @question.q_type == "singlechoice" %>
 
-  <% @survey.questions[session[:question_index]].answers.each do |answer| %>
-    <input type="radio" name='answer_id' id='<%= answer.id %>' value='<%= answer.id %>'><%= answer.answer %>
-    <br>
+    <input type="hidden" name="question_type" value="singlechoice">
+
+    <% @survey.questions[session[:question_index]].answers.each do |answer| %>
+      <input type="radio" name='answer_id' id='<%= answer.id %>' value='<%= answer.id %>'><%= answer.answer %>
+      <br>
+    <% end %>
+
+  <% elsif @question.q_type == "multichoice" %>
+
+    <input type="hidden" name="question_type" value="multichoice">
+
+    <select multiple id="answers" name="answer_ids[]">
+      <% @survey.questions[session[:question_index]].answers.each do |answer| %>
+      <option value="<%= answer.id %>"><%= answer.answer %> </option>
+      <% end %>
+    </select>
+
+  <% elsif @question.q_type == "open" %>
+    <input type="hidden" name="question_type" value="open">
+    <input type ="text" name="answer">
   <% end %>
+
   <button type='submit'>Next question</button>
 
 </form>

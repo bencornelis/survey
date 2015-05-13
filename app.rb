@@ -55,7 +55,7 @@ end
 
 post('/surveys/:id') do |id|
   @survey = Survey.find(id.to_i)
-  @survey.questions.create(:question => params.fetch("question"))
+  @survey.questions.create({:question => params.fetch("question"), :q_type => params.fetch("question_type")})
   erb(:survey)
 end
 
@@ -76,22 +76,40 @@ post("/take/:survey_id") do |id|
   respondent = Respondent.create(:name => params.fetch("name"))
   session[:respondent_id] = respondent.id
   @survey = Survey.find(id.to_i)
+  question_id = @survey.questions[session[:question_index]].id
+  @question = Question.find(question_id)
   @percent_complete = 0
+  @question
   erb(:take_survey)
 end
 
 get("/take/:survey_id") do |id|
   @survey = Survey.find(id.to_i)
   @percent_complete = 100*session[:question_index]/@survey.questions.length
+  if session[:question_index] != @survey.questions.length
+  question_id = @survey.questions[session[:question_index]].id
+  @question = Question.find(question_id)
+end
   erb(:take_survey)
 end
 
 post("/nextquestion/:survey_id") do |id|
   survey = Survey.find(id.to_i)
   question_id = survey.questions[session[:question_index]].id
-  answer_id = params["answer_id"]
+  @question = Question.find(question_id)
   respondent_id = session[:respondent_id]
-  Response.create({:question_id => question_id, :answer_id => answer_id, :respondent_id => respondent_id})
+    if params.fetch("question_type") == "singlechoice"
+      answer_id = params["answer_id"]
+    Response.create({:question_id => question_id, :answer_id => answer_id, :respondent_id => respondent_id})
+    elsif params.fetch("question_type") == "multichoice"
+    answer_ids = params.fetch("answer_ids")
+    answer_ids.each do |answer_id|
+      Response.create({:question_id => question_id, :answer_id => answer_id.to_i, :respondent_id => respondent_id})
+    end
+    elsif params.fetch("question_type") == "open"
+    answer = Answer.create(:answer => params.fetch("answer"))
+    Response.create({:question_id => question_id, :answer_id => answer.id, :respondent_id => respondent_id})
+    end
   session[:question_index] += 1
   redirect "/take/#{id}"
 end
